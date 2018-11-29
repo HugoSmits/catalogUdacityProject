@@ -1,2 +1,50 @@
 <html>
+<head>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<style>
+</style>
+</head>
+
+<body>
+<div class="row">
+	<div class="column">
+	<img src="/static/img_Hamburger.jpg" alt="Hamburger" style="width:100%">
+	</div>
+	<div class="column">
+	 <img src="/static/img_Pitas.jpg" alt="Pitas" style="width:100%">
+	</div>
+	<div class="column">
+	 <img src="/static/img_Sushi.jpg" alt="Sushi" style="width:100%">
+	</div>
+</div>
+
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<a href = '{{url_for('newRestaurant') }}'>
+Create New Restaurant</a>
+
+{% for i in restaurants %} <!-- logic code -->
+
+<a href = '{{url_for('showMenu', restaurant_id=i.id) }}'>
+<h1>{{i.name}}</h1> </a>
+
+<!-- Edit and eliminate links here -->
+<a href='{{url_for('editRestaurant', restaurant_id=i.id) }}'>Edit</a>
+
+</br>
+<a href = '{{url_for('deleteRestaurant', restaurant_id=i.id) }}'>Delete</a>
+
+{% endfor %}
+</body>
+
 </html>

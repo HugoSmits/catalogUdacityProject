@@ -1,7 +1,7 @@
 # My Restaurant Catalog App
 
 ## Description
-
+Compare and contrast some of the pro's and con's of a top-down approach focusing on the front-end first versus a bottum-up approach that focus on the database and server-side code first.
 
 
 ## Index
@@ -32,4 +32,12 @@
 - ##### API Endpoints
 - ##### Styling & Message Flashing
 
+## WebBio
+- ##### https://stackoverflow.com/questions/10503981/check-if-an-array-is-not-empty-in-jinja2
+
+
+## WebBioImg
+- ##### https://stocksnap.io/photo/SYDUAKYJIS
+- ##### https://stocksnap.io/photo/7QH4K6AESO
+- ##### https://stocksnap.io/photo/DOTNAI7BL2
 
