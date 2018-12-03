@@ -9,6 +9,21 @@ Base = declarative_base()
 
 #Table name serve only to reference them inside the table creation process
 
+class Users(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    e_mail = Column(String(250), nullable=False)
+
+    @property
+    def serialize(self):
+
+        return {
+            'id': self.id,
+        }
+
 class Restaurant(Base):
     __tablename__ = 'restaurant'
 

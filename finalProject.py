@@ -43,6 +43,34 @@ def showRestaurant():
     return render_template('restaurant.html', restaurants=restaurant)
 
 
+@app.route('/restaurant/login',
+            methods=['GET', 'POST'])
+def loginUser():
+    if request.method == 'POST':
+        newItem = Restaurant(
+            name=request.form['name'])
+        session.add(newItem)
+        session.commit()
+        flash('Restaurant created successfully!')
+        return redirect(url_for('showRestaurant'))
+    # return 'This page will create a new Restaurant!'
+    else:
+        return render_template('restaurantNew.html')
+
+@app.route('/restaurant/register',
+            methods=['GET', 'POST'])
+def registerUser():
+    if request.method == 'POST':
+        newItem = Restaurant(
+            name=request.form['name'])
+        session.add(newItem)
+        session.commit()
+        flash('Restaurant created successfully!')
+        return redirect(url_for('showRestaurant'))
+    # return 'This page will create a new Restaurant!'
+    else:
+        return render_template('restaurantNew.html')
+
 @app.route('/restaurant/new',
            methods=['GET', 'POST'])
 def newRestaurant():
