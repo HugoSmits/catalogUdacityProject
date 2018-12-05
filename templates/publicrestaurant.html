@@ -64,11 +64,6 @@
 	<a href = '{{url_for('showMenu', restaurant_id=i.id) }}'>
 	<h1>{{i.name}}</h1> </a>
 
-	<!-- Edit and eliminate links here -->
-	<a href='{{url_for('editRestaurant', restaurant_id=i.id) }}'>Edit</a>
-
-	</br>
-	<a href = '{{url_for('deleteRestaurant', restaurant_id=i.id) }}'>Delete</a>
 	</div>
 	{% endfor %}
 </div>
