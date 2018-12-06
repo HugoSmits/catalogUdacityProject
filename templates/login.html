@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+  </script>
+</head>
+
+<body>
+
+<!-- GOOGLE PLUS SIGN IN BUTTON-->      
+<div id="signinButton">
+<span class="g-signin"
+ data-scope="openid email"
+ data-clientid="474240594421-8mkg6mp7pv2r2mn437fj3h3io4m6vr2g.apps.googleusercontent.com"
+ data-redirecturi="postmessage"
+ data-accesstype="offline"
+ data-cookiepolicy="single_host_origin"
+ data-callback="signInCallback"
+ data-approvalprompt="force">
+ </span>
+</div>
+<div id="result"></div>
+<script>
+function signInCallback(authResult) {
+  if (authResult['code']) {
+    // Hide the sign-in button now that the user is authorized
+    $('#signinButton').attr('style', 'display: none');
+    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'POST',
+      url: '/gconnect?state={{STATE}}',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+         setTimeout(function() {
+          // Change to redirect to correct url
+          window.location.href = "/restaurants";
+         }, 4000);
+          
+      } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+      
+  }); } }
+</script>
+
+<!--END GOOGLE PLUS SIGN IN -->
+
+<form action="{{ url_for('showLogin')}}" method='POST'>
+  <div class="container">
+    <h1>Sign Up</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <label for="psw-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+    
+    <label>
+      <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+    </label>
+    
+    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+
+    <div class="clearfix">
+      <button type="button" class="cancelbtn">Cancel</button>
+      <button type="submit" class="signupbtn">Sign Up</button>
+    </div>
+  </div>
+</form>
+
+</body>
+</html>

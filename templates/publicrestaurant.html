@@ -1,0 +1,73 @@
+<html>
+<head>
+<!-- Load Font Awesome Icon Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<style>
+</style>
+<script type=text/javascript src="{{
+  url_for('static', filename='listGridView.js') }}"></script>
+</head>
+
+
+<body>
+<div class="row">
+	<div class="column">
+	<img src="/static/img_Hamburger.jpg" alt="Hamburger" style="width:100%">
+	</div>
+	<div class="column">
+	 <img src="/static/img_Pitas.jpg" alt="Pitas" style="width:100%">
+	</div>
+	<div class="column">
+	 <img src="/static/img_Sushi.jpg" alt="Sushi" style="width:100%">
+	</div>
+</div>
+
+<body onload="listViewRestaurant()">
+
+<div class="topnav">
+  <a class="active" href='{{url_for('showRestaurant') }}'>Home</a>
+  <a href='{{url_for('newRestaurant') }}'>Create New Restaurant</a>
+  <div class="topnav-right">
+    <a href='{{url_for('showRestaurant') }}'>Login</a>
+    <a href='{{url_for('showRestaurant') }}'>Register</a>
+	<a href='{{url_for('showRestaurant') }}'>Logout</a>
+  </div>
+</div>
+
+</br>
+
+<!-- Buttons to choose list or grid view -->
+<button onclick="listViewRestaurant()"><i class="fa fa-bars"></i> List</button> 
+<button onclick="gridViewRestaurant()"><i class="fa fa-th-large"></i> Grid</button>
+
+</br>
+
+<div class = 'flash'>
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+</div>
+</br>
+
+<div class="enumerate_restaurant_row">
+	{% for i in restaurants %} <!-- logic code -->
+	<div class="enumerate_restaurant_column">
+	<a href = '{{url_for('showMenu', restaurant_id=i.id) }}'>
+	<h1>{{i.name}}</h1> </a>
+
+	</div>
+	{% endfor %}
+</div>
+</body>
+<script type=text/javascript src="{{
+  url_for('static', filename='listGridView.js') }}"></script>
+</html>
