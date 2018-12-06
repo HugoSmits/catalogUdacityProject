@@ -9,13 +9,13 @@ Base = declarative_base()
 
 #Table name serve only to reference them inside the table creation process
 
-class Users(Base):
-    __tablename__ = 'users'
+class User(Base):
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(250), nullable=False)
-    last_name = Column(String(250), nullable=False)
-    e_mail = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
 
     @property
     def serialize(self):
@@ -29,13 +29,15 @@ class Restaurant(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
-
+        """Return object data in easily serializeable format"""
         return {
-            'id': self.id,
             'name': self.name,
+            'id': self.id,
         }
 
 
@@ -49,12 +51,12 @@ class MenuItem(Base):
     course = Column(String(250))
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurant = relationship(Restaurant)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
-# We added this serialize function to be able to send JSON objects in a
-# serializable format
     @property
     def serialize(self):
-
+        """Return object data in easily serializeable format"""
         return {
             'name': self.name,
             'description': self.description,
@@ -65,6 +67,6 @@ class MenuItem(Base):
         
 # insert_at end of file
 
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 
 Base.metadata.create_all(engine)
