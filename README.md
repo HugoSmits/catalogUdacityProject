@@ -67,6 +67,36 @@ Compare and contrast some of the pro's and con's of a top-down approach focusing
 - ##### Limited/restricted internet access (e.g. if site is offline).
 - ##### 2 factor authentication may require own Authentication.
 
+## API Endpoints technologies
+#### JSON and XML
+
+#### JSON
+- ##### Derived from JavaScript.
+- ##### Can be condensed to reduce file size.
+- ##### JSON is considered to most common way to structure data sent across restful API's
+
+#### XML
+- ##### Uses identifying tags similar to html.
+
+#### SOAP vs REST architectures
+
+#### SOAP
+- ##### Must use XML for message format.
+- ##### Works with HTTP and other Application layer protocols.
+
+#### REST (Has gained alot of popularity)
+- ##### Uses HTTP verbs to manage resources.
+- ##### Can use any type of message format
+- ##### Easier to implement
+
+- #### REST contraints
+- ##### Needs clear differention betweem client and server.
+- ##### Stateless meaning it doesn't remember the clients activity during the session.
+- ##### Cacheable (can be cached by the client if permitted so)
+- ##### Uniform Interface
+- ##### Layered System: Endpoints that rely on other endpoints.
+- ##### Code on demand (Opcional)
+
 ## WebBio
 - ##### https://stackoverflow.com/questions/10503981/check-if-an-array-is-not-empty-in-jinja2
 - ##### https://kyleschaeffer.com/development/css-font-size-em-vs-px-vs-pt-vs/
