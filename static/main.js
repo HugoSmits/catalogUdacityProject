@@ -1,5 +1,12 @@
 // Get the modal
-var modal = document.getElementById('myModal');
+var modal = document.getElementById('myLoginModal');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
 var img = document.getElementById('myImg');
