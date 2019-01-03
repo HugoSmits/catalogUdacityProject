@@ -2,10 +2,12 @@
 fb_client_secrets.json
 restaurantmenuwithusers.db
 testFinalProject.py
-
+*.png
+example.*
 # Compiled source #
 ###################
-
+*.pyc
+*.rdb
 
 # Packages #
 ############
