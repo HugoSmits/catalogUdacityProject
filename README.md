@@ -97,6 +97,42 @@ Compare and contrast some of the pro's and con's of a top-down approach focusing
 - ##### Layered System: Endpoints that rely on other endpoints.
 - ##### Code on demand (Opcional)
 
+## Hashing
+- ##### Can only be used in one way
+- ##### Is deterministic (Same passwords give same hashes)
+
+## URI's
+- ##### Refer to resources (in plural) and not actions of the resources.
+
+## API's with version
+- ##### Maitains usability for older users if api's are updated. (v1 , v2 , ...)
+
+## WebAIM WCAG 2.0
+- ##### Role , Label /(Name) , Value , State
+	- ##### The Name of an object is, well, its name. For instance, in the case of a BUTTON element, the ‘name’ of that element would be the text within the button. For an INPUT element, the name would be its label. In other words, the name says: “What do we call this thing?”.
+
+	- ##### The State of an object describes what this thing is currently doing, if it can do things. Implicitly, it also often describes what else this thing can do. For a checkbox, for example, its current state could be “checked”. This implies therefore that it could also be “unchecked” (unless it is readonly, of course).
+
+	- ##### The Role of an object declares what it is. In other words, using our previous example, the object would have a role of “checkbox”. Or, more specifically, it would have whatever role that the operating system or accessibility API says is the role for checkboxes. MSAA and UIAutomation would use ‘ROLE_SYSTEM_CHECKBUTTON’ to identify its role.
+
+	- ##### The Value of an object is, er, the value. Whether this exists or not and what its value is depends significantly on the type of object. Perhaps the easiest way to understand this would be to again use our checkbox analogy. Provided the following code: <input type="checkbox" name="agree" id="agree" value="Yes" /><label for="agree">Do you agree Karl is awesome?</label> the value for this checkbox would be ‘Yes’ (when in a checked state).
+
+- ##### DOM order / Tab order
+- ##### tabindex (Should only be for interactive content)
+(FOCUS) ( -1 (of screen elements) javascript focusable , 0 (on screen elements)
+and javascript focusable).
+- ##### Managing Focus
+- ##### ARIA
+	- ##### Use High contrast when styling.
+	- ##### Use additional messages to not rely on color alone.
+- ##### Roving Focus
+- ##### document.activeElement to search in web console(Ctrl+Shift+J) for active tab element.
+- ##### Keyboard Trap (Should be avoided)
+- ##### Screen Reader would get a HTML page from the 90's
+- ##### DOM Tree is converted into the Acessibility Tree
+- ##### Alt "label" for extra info for Screen Readers
+- ##### Accessibility Developer Tools 
+
 ## WebBio
 - ##### https://stackoverflow.com/questions/10503981/check-if-an-array-is-not-empty-in-jinja2
 - ##### https://kyleschaeffer.com/development/css-font-size-em-vs-px-vs-pt-vs/
@@ -104,6 +140,7 @@ Compare and contrast some of the pro's and con's of a top-down approach focusing
 - ##### https://en.wikipedia.org/wiki/Man-in-the-middle_attack
 - ##### https://en.wikipedia.org/wiki/Session_hijacking
 - ##### https://en.wikipedia.org/wiki/OAuth
+- ##### https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb/related.
 
 ## WebBioImg
 - ##### https://stocksnap.io/photo/SYDUAKYJIS

@@ -1,9 +1,11 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine , asc
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Restaurant, Base, MenuItem, User
+from database_setup import Base, User, Restaurant, MenuItem
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+#engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db',
+                       connect_args={'check_same_thread': False})
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
