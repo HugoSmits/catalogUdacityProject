@@ -618,13 +618,13 @@ def showMenu(restaurant_id):
             or creator.id != login_session['user_id']:
         return render_template(
             'publicmenu.html',
-            items=items,
+            menus=items,
             restaurant=restaurant,
             creator=creator)
     else:
         return render_template(
             'menu.html',
-            items=items,
+            menus=items,
             restaurant=restaurant,
             creator=creator)
 
@@ -690,7 +690,7 @@ def editMenu(restaurant_id, menu_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete',
            methods=['GET', 'POST'])
-def deleteMenuItem(restaurant_id, menu_id):
+def deleteMenu(restaurant_id, menu_id):
     if 'username' not in login_session:
         return redirect('/login')
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
