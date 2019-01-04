@@ -4,6 +4,7 @@ restaurantmenuwithusers.db
 testFinalProject.py
 *.png
 example.*
+backup_login.html
 # Compiled source #
 ###################
 *.pyc
