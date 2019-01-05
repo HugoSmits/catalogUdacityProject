@@ -5,6 +5,7 @@ testFinalProject.py
 *.png
 example.*
 backup_login.html
+testing.py
 # Compiled source #
 ###################
 *.pyc

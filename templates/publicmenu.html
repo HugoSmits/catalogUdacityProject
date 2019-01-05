@@ -10,9 +10,11 @@
 
 <div class="topnav">
   <a class="active" href='{{url_for('showRestaurant') }}'>Home</a>
+  <!--
   {%if 'username' in session %}
   <a href = '{{url_for('newMenu', restaurant_id = restaurant.id) }}'>Create New Menu</a>
   {% endif %}
+-->
   <div class="topnav-right">
   	{%if 'username' not in session %}
     <a href='{{url_for('showLogin') }}'>Login</a>

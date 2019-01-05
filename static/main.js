@@ -1,5 +1,6 @@
 // Get the modal
 var modal = document.getElementById('myLoginModal');
+var modalNewRestaurant = document.getElementById('createNewRestaurant');
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
