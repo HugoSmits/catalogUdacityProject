@@ -11,9 +11,9 @@
 </head>
 
 <body>
-  <!-- GOOGLE PLUS SIGN IN-->
-
-          
+  <div class="signInCls">
+    <h1>Sign In</h1>
+    <span>
           <div id="signinButton">
           <span class="g-signin"
             data-scope="openid email"
@@ -25,6 +25,21 @@
             data-approvalprompt="force">
           </span>
         </div>
+
+        <button>
+         
+
+          <fb:login-button class="signinButtonFacebook" scope="public_profile,email" onlogin="sendTokenToServer();">
+          <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+
+          </fb:login-button>
+        </button>
+      </span>
+</div>
+  <!-- GOOGLE PLUS SIGN IN-->
+
+          
+<br>
 
 <div id="result"></div>
 
@@ -114,17 +129,11 @@ function signInCallback(authResult) {
 </script>
 
 
-<button>
-         
-
-          <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-<a href='javascript:sendTokenToServer()'>Login with Facebook</a>
-
-</fb:login-button>
 
 
 
-</button>
+
+
 
 <!--END FACEBOOK SIGN IN -->
 

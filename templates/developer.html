@@ -1,0 +1,35 @@
+<html>
+<head>
+<!-- Load Font Awesome Icon Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<style>
+</style>
+</head>
+
+
+<body>
+<div class="topnav">
+  <a href='{{url_for('showRestaurant') }}'>Home</a>
+  {%if 'username' in session %}
+  <a class="active" href='{{url_for('developer') }}' id="developer">Developer</a>
+  {% endif %}
+
+  <div class="topnav-right">
+  	{%if 'username' not in session %}
+    <a href='{{url_for('showLogin') }}'>Login</a>
+    {% else %}
+    <a href='{{url_for('disconnect') }}'>Logout</a>
+    {% endif %}
+  </div>
+</div>
+	<h1>Developer API calls</h1>
+
+	<p name=""><b>http://localhost:5000/restaurants/JSON</b>:<br>Lists all the restaurants</p>
+	<p name=""><b>http://localhost:5000/restaurants/restaurant_id/menu/JSON</b>:<br>Lists all the menu's of the respective restaurant (restaurant_id is an integer) </p>
+	<p name=""><b>http://localhost:5000/restaurants/restaurant_id/menu/menu_id/JSON</b>:<br>Lists an individual menu pertaining to a certain restaurant (restaurant_id is an integer , menu_id is an integer) </p>
+
+	<a href = "{{ url_for('showRestaurant')}}"> Go back </a>
+</body>
+
+</html>

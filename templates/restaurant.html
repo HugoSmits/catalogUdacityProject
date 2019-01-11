@@ -29,6 +29,7 @@
 <div class="topnav">
   <a class="active" href='{{url_for('showRestaurant') }}'>Home</a>
   {%if 'username' in session %}
+  <a href='{{url_for('developer') }}' id="developer">Developer</a>
   <a href='{{url_for('newRestaurant') }}' id="createNewRestaurant">Create New Restaurant</a>
   {% endif %}
 

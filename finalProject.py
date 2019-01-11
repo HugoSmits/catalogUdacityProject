@@ -497,6 +497,13 @@ def restaurantMenuItemJSON(restaurant_id, menu_id):
         filter_by(id=menu_id).one()
     return jsonify(MenuItem=[menuItem.serialize])
 
+@app.route('/restaurants/developer',
+           methods=['GET', 'POST'])
+def developer():
+    if 'username' not in login_session:
+        return redirect('/login')
+    else:
+        return render_template('developer.html')
 
 @app.route('/restaurant/login',
            methods=['GET', 'POST'])
@@ -568,8 +575,9 @@ def editRestaurant(restaurant_id):
     if editedRestaurant.user_id != login_session['user_id']:
         return "<script>function myFunction() \
         {alert('You are not authorized to edit this restaurant. \
-        Please create your own restaurant in order to edit.');}\
-        </script><body onload='myFunction()''>"
+        Please create your own restaurant in order to edit.');\
+        window.location = '/restaurants' \
+        }</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedRestaurant.name = request.form['name']
@@ -591,8 +599,9 @@ def deleteRestaurant(restaurant_id):
     if restaurantToDelete.user_id != login_session['user_id']:
         return "<script>function myFunction() \
         {alert('You are not authorized to delete this restaurant. \
-        Please create your own restaurant in order to delete.');}\
-        </script><body onload='myFunction()''>"
+        Please create your own restaurant in order to delete.'); \
+        window.location = '/restaurants' \
+        }</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(restaurantToDelete)
         flash('%s Successfully Deleted' % restaurantToDelete.name)
