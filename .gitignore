@@ -1,5 +1,4 @@
 # Don't track content of these files
-fb_client_secrets.json
 restaurantmenuwithusers.db
 testFinalProject.py
 *.png

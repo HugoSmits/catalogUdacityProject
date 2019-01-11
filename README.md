@@ -7,9 +7,11 @@ Compare and contrast some of the pro's and con's of a top-down approach focusing
 1. [Bio and File info](#bio-and-file-info)
 2. [Version](#version)
 3. [Keywords](#keywords)
-4. [Checklist](#checklist)
-5. [WebBio](#webbio)
-6. [WebBioImg](#webbioimg)
+4. [Setting up for this project](#setting-up-for-this-project)
+5. [Download the data](#download-the-data)
+6. [Checklist](#checklist)
+7. [WebBio](#webbio)
+8. [WebBioImg](#webbioimg)
 
 ## Bio , File and Repo info
 
@@ -46,6 +48,56 @@ Compare and contrast some of the pro's and con's of a top-down approach focusing
 - ##### Add API Endpoints
 - ##### Securing API Endpoints
 - ##### Polishing Styling
+
+## Setting up for this project
+##### To do the exercises in this project, you will need access to a Linux machine you can log into with SSH. One option is to install a Linux-based virtual machine on your own computer.
+
+### Your Linux machine (Local VM option)
+##### If you prefer to work on your own computer instead of a commercial service, you can run a Linux virtual machine (VM) on top of your regular operating system.
+
+### You will need to install two pieces of software:
+
+- ##### VirtualBox, which you can get from this [download page](https://www.virtualbox.org/wiki/Downloads).
+- ##### Vagrant, which you can get from this [download page](https://www.vagrantup.com/downloads.html).
+
+##### You will also need a Unix-style terminal program. On Mac or Linux systems, you can use the built-in Terminal. On Windows, I recommend Git Bash, which is installed with the Git version control software.
+
+##### Once you have VirtualBox and Vagrant installed, open a terminal and run the following commands:
+```
+mkdir networking
+cd networking
+vagrant init ubuntu/trusty64
+vagrant up
+```
+##### This will create a new directory for this project and begin downloading a Linux image into this directory. It may take a long time to download, depending on your Internet connection.
+
+##### When it is complete, you can log into the Linux instance with ```vagrant ssh```. You are now ready to continue with the project.
+
+##### If you log out of the Linux instance or close the terminal, the next time you want to use it you only need to run ```cd networking``` and ```vagrant ssh```.
+
+## Download the data
+
+##### Next, download the data [here](https://github.com/HugoSmits/catalogUdacityProject). You can fork the repository and clone it to your local git repository. The file needed is called newsdata.sql the rest are personal answers to the project. Put this file into the vagrant directory, which is shared with your virtual machine.
+
+##### Within the repository you can find the file called Vagrantfile which will help you set up your vagrant environment with the right configurations. BEWARE: config.vm.box_download_insecure is set to TRUE. Doesn't verify ssl certificates. Line can be removed or altered at said file. Setup can't be guaranteed if done so.
+
+## How to connect and access the site
+#### Connecting for the first time 
+```
+python database_setup.py
+```
+#### To populate the site run the following command.
+```
+python lotsofmenus1.py
+```
+#### following connections don't need to run the previous commands.
+
+#### Run the following command to activate server side of the site.
+```
+python finalProject.py
+```
+#### To go to the site use the following URL:
+##### http://localhost:5000/restaurants/
 
 ## Css Fontsize Em vs Percent
 - ##### The situation is that point and pixel units are not necessarily best suited for web documents, which leaves us with the em and percent units. In theory, both the em and the percent units are identical, but in application, they actually have a few minor differences that are important to consider.
