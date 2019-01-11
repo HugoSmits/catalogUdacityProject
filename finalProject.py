@@ -6,7 +6,7 @@ from flask import Flask, flash
 from flask import render_template, url_for
 from flask import request, redirect
 from flask import Session, jsonify
-from sqlalchemy import create_engine , asc
+from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Restaurant, MenuItem
 
@@ -20,7 +20,7 @@ import requests
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 
-#from flask.ext.httpauth import HTTPBasicAuth
+# from flask.ext.httpauth import HTTPBasicAuth
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
@@ -40,103 +40,108 @@ APPLICATION_NAME = "Restaurant Menu Application"
 
 # Create anti-forgery state token
 
-@app.route('/oauth/<provider>', methods = ['POST'])
+
+@app.route('/oauth/<provider>', methods=['POST'])
 def login(provider):
-    #STEP 1 - Parse the auth code
+    # STEP 1 - Parse the auth code
     auth_code = request.json.get('auth_code')
     print "Step 1 - Complete, received auth code %s" % auth_code
     if provider == 'google':
-        #STEP 2 - Exchange for a token
+        # STEP 2 - Exchange for a token
         try:
             # Upgrade the authorization code into a credentials object
-            oauth_flow = flow_from_clientsecrets('g_client_secrets.json', scope='')
+            oauth_flow = flow_from_clientsecrets(
+                'g_client_secrets.json', scope='')
             oauth_flow.redirect_uri = 'postmessage'
             credentials = oauth_flow.step2_exchange(auth_code)
         except FlowExchangeError:
-            response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
+            response = make_response(
+                json.dumps('Failed to upgrade the authorization code.'), 401)
             response.headers['Content-Type'] = 'application/json'
             return response
-          
+
         # Check that the access token is valid.
         access_token = credentials.access_token
-        url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+        url = (
+            'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' %
+            access_token)
         h = httplib2.Http()
         result = json.loads(h.request(url, 'GET')[1])
         # If there was an error in the access token info, abort.
         if result.get('error') is not None:
             response = make_response(json.dumps(result.get('error')), 500)
             response.headers['Content-Type'] = 'application/json'
-            
+
         # # Verify that the access token is used for the intended user.
         # gplus_id = credentials.id_token['sub']
         # if result['user_id'] != gplus_id:
-        #     response = make_response(json.dumps("Token's user ID doesn't match given user ID."), 401)
+        #     response = make_response(json.dumps
+        # ("Token's user ID doesn't match given user ID."), 401)
         #     response.headers['Content-Type'] = 'application/json'
         #     return response
 
         # # Verify that the access token is valid for this app.
         # if result['issued_to'] != CLIENT_ID:
-        #     response = make_response(json.dumps("Token's client ID does not match app's."), 401)
+        #     response = make_response(json.dumps
+        # ("Token's client ID does not match app's."), 401)
         #     response.headers['Content-Type'] = 'application/json'
         #     return response
 
         # stored_credentials = login_session.get('credentials')
         # stored_gplus_id = login_session.get('gplus_id')
         # if stored_credentials is not None and gplus_id == stored_gplus_id:
-        #     response = make_response(json.dumps('Current user is already connected.'), 200)
+        #     response = make_response(json.dumps
+        # ('Current user is already connected.'), 200)
         #     response.headers['Content-Type'] = 'application/json'
         #     return response
         print "Step 2 Complete! Access Token : %s " % credentials.access_token
 
-        #STEP 3 - Find User or make a new one
-        
-        #Get user info
+        # STEP 3 - Find User or make a new one
+
+        # Get user info
         h = httplib2.Http()
-        userinfo_url =  "https://www.googleapis.com/oauth2/v1/userinfo"
-        params = {'access_token': credentials.access_token, 'alt':'json'}
+        userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
+        params = {'access_token': credentials.access_token, 'alt': 'json'}
         answer = requests.get(userinfo_url, params=params)
-      
+
         data = answer.json()
 
         name = data['name']
         picture = data['picture']
         email = data['email']
-        
-        
-     
-        #see if user exists, if it doesn't make a new one
+
+        # see if user exists, if it doesn't make a new one
         user = session.query(User).filter_by(email=email).first()
         if not user:
-            user = User(username = name, picture = picture, email = email)
+            user = User(username=name, picture=picture, email=email)
             session.add(user)
             session.commit()
 
-        
-
-        #STEP 4 - Make token
+        # STEP 4 - Make token
         token = user.generate_auth_token(600)
 
-        
-
-        #STEP 5 - Send back token to the client 
+        # STEP 5 - Send back token to the client
         return jsonify({'token': token.decode('ascii')})
-        
-        #return jsonify({'token': token.decode('ascii'), 'duration': 600})
+
+        # return jsonify({'token': token.decode('ascii'), 'duration': 600})
     else:
         return 'Unrecoginized Provider'
-        
+
+
 @auth.verify_password
 def verify_password(username_or_token, password):
-    #Try to see if it's a token first
+    # Try to see if it's a token first
     user_id = User.verify_auth_token(username_or_token)
     if user_id:
-        user = session.query(User).filter_by(id = user_id).one()
+        user = session.query(User).filter_by(id=user_id).one()
     else:
-        user = session.query(User).filter_by(username = username_or_token).first()
+        user = session.query(User).filter_by(
+            username=username_or_token).first()
         if not user or not user.verify_password(password):
             return False
     g.user = user
     return True
+
 
 @app.route('/token')
 @auth.login_required
@@ -144,19 +149,22 @@ def get_auth_token():
     token = g.user.generate_auth_token()
     return jsonify({'token': token.decode('ascii')})
 
-@app.route('/api/users', methods = ['POST'])
+
+@app.route('/api/users', methods=['POST'])
 def new_user():
     username = request.json.get('username')
     password = request.json.get('password')
     if username is None or password is None:
-        abort(400) # missing arguments
-    if session.query(User).filter_by(username = username).first() is not None:
-        abort(400) # existing user
-    user = User(username = username)
+        abort(400)  # missing arguments
+    if session.query(User).filter_by(username=username).first() is not None:
+        abort(400)  # existing user
+    user = User(username=username)
     user.hash_password(password)
     session.add(user)
     session.commit()
-    return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
+    return jsonify({'username': user.username}), 201, {
+        'Location': url_for('get_user', id=user.id, _external=True)}
+
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
@@ -165,10 +173,12 @@ def get_user(id):
         abort(400)
     return jsonify({'username': user.username})
 
+
 @app.route('/api/resource')
 @auth.login_required
 def get_resource():
-    return jsonify({ 'data': 'Hello, %s!' % g.user.username })
+    return jsonify({'data': 'Hello, %s!' % g.user.username})
+
 
 @app.route('/login')
 def showLogin():
@@ -179,6 +189,7 @@ def showLogin():
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
+
 
 @app.route('/disconnect')
 def disconnect():
@@ -201,6 +212,7 @@ def disconnect():
         flash("You were not logged in")
         return redirect(url_for('showRestaurant'))
 
+
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
@@ -210,29 +222,34 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+    url = 'https://graph.facebook.com/oauth/access_token?\
+    grant_type=fb_exchange_token&client_id=%s&client_secret=%s\
+    &fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
-
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
     '''
-        Due to the formatting for the result from the server token exchange we have to
-        split the token first on commas and select the first index which gives us the key : value
-        for the server access token then we split it on colons to pull out the actual token value
-        and replace the remaining quotes with nothing so that it can be used directly in the graph
+        Due to the formatting for the result from
+        the server token exchange we have to
+        split the token first on commas and
+        select the first index which gives us the key : value
+        for the server access token then we split
+        it on colons to pull out the actual token value
+        and replace the remaining quotes with
+        nothing so that it can be used directly in the graph
         api calls
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.8/me?\
+    access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     # print "url sent for API access:%s"% url
@@ -247,7 +264,8 @@ def fbconnect():
     login_session['access_token'] = token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    url = 'https://graph.facebook.com/v2.8/me/picture?\
+    access_token=%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -267,7 +285,9 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; \
+    height: 300px;border-radius: 150px;\
+    -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
     flash("Now logged in as %s" % login_session['username'])
     return output
@@ -278,10 +298,12 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (
+        facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "you have been logged out"
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -378,6 +400,8 @@ def gconnect():
     return output
 
 # DISCONNECT - Revoke a current user's token and reset their login_session
+
+
 @app.route('/gdisconnect')
 def gdisconnect():
         # Only disconnect a connected user.
@@ -392,11 +416,11 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         # Reset the user's sesson.
-        #del login_session['access_token']
-        #del login_session['gplus_id']
-        #del login_session['username']
-        #del login_session['email']
-        #del login_session['picture']
+        # del login_session['access_token']
+        # del login_session['gplus_id']
+        # del login_session['username']
+        # del login_session['email']
+        # del login_session['picture']
 
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
@@ -431,51 +455,61 @@ def getUserID(email):
     except BaseException:
         return None
 
-@app.route('/restaurants/JSON', methods = ['GET', 'POST'])
+
+@app.route('/restaurants/JSON', methods=['GET', 'POST'])
 def all_restaurants_handler():
-  if request.method == 'GET':
-    # RETURN ALL RESTAURANTS IN DATABASE
-    restaurants = session.query(Restaurant).all()
-    return jsonify(restaurants = [i.serialize for i in restaurants])
+    if request.method == 'GET':
+        # RETURN ALL RESTAURANTS IN DATABASE
+        restaurants = session.query(Restaurant).all()
+        return jsonify(restaurants=[i.serialize for i in restaurants])
 
-  elif request.method == 'POST':
-    # MAKE A NEW RESTAURANT AND STORE IT IN DATABASE
-    location = request.args.get('location', '')
-    mealType = request.args.get('mealType', '')
-    restaurant_info = findARestaurant(mealType, location)
-    if restaurant_info != "No Restaurants Found":
-      restaurant = Restaurant(restaurant_name = unicode(restaurant_info['name']), restaurant_address = unicode(restaurant_info['address']), restaurant_image = restaurant_info['image'])
-      session.add(restaurant)
-      session.commit() 
-      return jsonify(restaurant = restaurant.serialize)
-    else:
-      return jsonify({"error":"No Restaurants Found for %s in %s" % (mealType, location)})
-    
-@app.route('/restaurants/JSON/<int:id>', methods = ['GET','PUT', 'DELETE'])
+    elif request.method == 'POST':
+        # MAKE A NEW RESTAURANT AND STORE IT IN DATABASE
+        location = request.args.get('location', '')
+        mealType = request.args.get('mealType', '')
+        restaurant_info = findARestaurant(mealType, location)
+        if restaurant_info != "No Restaurants Found":
+            restaurant = Restaurant(
+                restaurant_name=unicode(
+                    restaurant_info['name']),
+                restaurant_address=unicode(
+                    restaurant_info['address']),
+                restaurant_image=restaurant_info['image'])
+            session.add(restaurant)
+            session.commit()
+            return jsonify(restaurant=restaurant.serialize)
+        else:
+            return jsonify(
+                {"error": "No Restaurants \
+                Found for %s in %s" % (mealType, location)})
+
+
+@app.route('/restaurants/JSON/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def restaurant_handler(id):
-  restaurant = session.query(Restaurant).filter_by(id = id).one()
-  if request.method == 'GET':
-    #RETURN A SPECIFIC RESTAURANT
-    return jsonify(restaurant = restaurant.serialize)
-  elif request.method == 'PUT':
-    #UPDATE A SPECIFIC RESTAURANT
-    address = request.args.get('address')
-    image = request.args.get('image')
-    name = request.args.get('name')
-    if address:
-        restaurant.restaurant_address = address
-    if image:
-        restaurant.restaurant_image = image
-    if name:
-        restaurant.restaurant_name = name
-    session.commit()
-    return jsonify(restaurant = restaurant.serialize)
+    restaurant = session.query(Restaurant).filter_by(id=id).one()
+    if request.method == 'GET':
+        # RETURN A SPECIFIC RESTAURANT
+        return jsonify(restaurant=restaurant.serialize)
+    elif request.method == 'PUT':
+        # UPDATE A SPECIFIC RESTAURANT
+        address = request.args.get('address')
+        image = request.args.get('image')
+        name = request.args.get('name')
+        if address:
+            restaurant.restaurant_address = address
+        if image:
+            restaurant.restaurant_image = image
+        if name:
+            restaurant.restaurant_name = name
+        session.commit()
+        return jsonify(restaurant=restaurant.serialize)
 
-  elif request.method == 'DELETE':
-    #DELETE A SPECFIC RESTAURANT
-    session.delete(restaurant)
-    session.commit()
-    return "Restaurant Deleted"
+    elif request.method == 'DELETE':
+        # DELETE A SPECFIC RESTAURANT
+        session.delete(restaurant)
+        session.commit()
+        return "Restaurant Deleted"
+
 
 @app.route('/restaurants/JSON')
 def restaurantJSON():
@@ -497,6 +531,7 @@ def restaurantMenuItemJSON(restaurant_id, menu_id):
         filter_by(id=menu_id).one()
     return jsonify(MenuItem=[menuItem.serialize])
 
+
 @app.route('/restaurants/developer',
            methods=['GET', 'POST'])
 def developer():
@@ -504,6 +539,7 @@ def developer():
         return redirect('/login')
     else:
         return render_template('developer.html')
+
 
 @app.route('/restaurant/login',
            methods=['GET', 'POST'])
@@ -720,7 +756,8 @@ def deleteMenu(restaurant_id, menu_id):
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
-    #app.config['SECRET_KEY'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    # app.config['SECRET_KEY'] = ''.join(random.choice(
+    # string.ascii_uppercase + string.digits) for x in xrange(32))
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
