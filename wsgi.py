@@ -9,4 +9,4 @@ application.secret_key = 'New secret key. Change it on server'
 
 application.config['SQLALCHEMY_DATABASE_URI'] = (
     'postgresql://'
-    'catalog:password@localhost/catalog')
+    'catalog:password123@localhost/catalog')
