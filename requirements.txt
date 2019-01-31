@@ -5,3 +5,6 @@ Flask-Migrate==2.0.4
 Flask-Login==0.4.0
 requests-oauthlib==0.8.0
 psycopg2==2.7.1
+passlib==1.7.1
+itsdangerous==1.1.0
+system==0.1.14

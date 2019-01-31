@@ -26,6 +26,7 @@ from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
 
 engine = create_engine('sqlite:///restaurantmenuwithusers.db',
                        connect_args={'check_same_thread': False})
