@@ -1,5 +1,4 @@
 # Don't track content of these files
-restaurantmenuwithusers.db
 testFinalProject.py
 *.png
 example.*
