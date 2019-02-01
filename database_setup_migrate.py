@@ -30,7 +30,7 @@ Base = declarative_base()
 #secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 #Table name serve only to reference them inside the table creation process
 
-class User(Base):
+class User(db.Model):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -70,7 +70,7 @@ class User(Base):
             'id': self.id,
         }
 
-class Restaurant(Base):
+class Restaurant(db.Model):
     __tablename__ = 'restaurant'
 
     id = Column(Integer, primary_key=True)
@@ -91,7 +91,7 @@ class Restaurant(Base):
         }
 
 
-class MenuItem(Base):
+class MenuItem(db.Model):
     __tablename__ = 'menu_item'
 
     id = Column(Integer, primary_key=True)
