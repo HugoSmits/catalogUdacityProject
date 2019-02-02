@@ -26,7 +26,6 @@ from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
 
 engine = create_engine('sqlite:///restaurantmenuwithusers.db',
                        connect_args={'check_same_thread': False})
@@ -761,4 +760,7 @@ if __name__ == '__main__':
     # string.ascii_uppercase + string.digits) for x in xrange(32))
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    #Use this when running in test phase.
+    #app.run(host='0.0.0.0', port=5000)
+    #Run this line of code in web deployment phase.
+    app.run()
