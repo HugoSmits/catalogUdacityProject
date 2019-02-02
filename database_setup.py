@@ -103,7 +103,6 @@ class MenuItem(Base):
 #For sqlite database
 #engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 #Web deployment with postgresql database
-engine = create_engine('postgresql://catalog:password123@localhost/catalog',
-                       connect_args={'check_same_thread': False})
+engine = create_engine('postgresql://catalog:password123@localhost/catalog')
 
 Base.metadata.create_all(engine)
