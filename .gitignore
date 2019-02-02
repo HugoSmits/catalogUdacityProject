@@ -1,4 +1,6 @@
 # Don't track content of these files
+manage.py
+wsgi.py
 testFinalProject.py
 *.png
 example.*

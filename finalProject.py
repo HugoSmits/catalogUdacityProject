@@ -27,7 +27,11 @@ auth = HTTPBasicAuth()
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db',
+#For sqlite database
+#engine = create_engine('sqlite:///restaurantmenuwithusers.db',
+#                       connect_args={'check_same_thread': False})
+#Web deployment with postgresql database
+engine = create_engine('postgresql://catalog:password123@localhost/catalog',
                        connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 

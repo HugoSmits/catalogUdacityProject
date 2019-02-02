@@ -100,6 +100,10 @@ class MenuItem(Base):
         
 # insert_at end of file
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+#For sqlite database
+#engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+#Web deployment with postgresql database
+engine = create_engine('postgresql://catalog:password123@localhost/catalog',
+                       connect_args={'check_same_thread': False})
 
 Base.metadata.create_all(engine)
