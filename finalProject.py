@@ -38,6 +38,9 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# When deploying the web server
+APP_ROUTE='/var/www/catalog/catalog/'
+
 CLIENT_ID = json.loads(
     open('g_client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
@@ -574,9 +577,22 @@ def registerUser():
     else:
         return render_template('restaurantNew.html')
 
+
+#NEED TO WORK ON THIS !!!
+
+#There's no guarantee that an object with the provided id 
+#actually exists in the database. So, when you try to run 
+#the .one() or .first() function, your server will throw 
+#an error if there isn’t an object with this id. 
+#Try this out yourself, put a fake id in the URL.
+
+#To mitigate this issue, use the one_or_none() function. 
+#Instead of throwing an error, this function will simply 
+#return a NoneType object. You can then use simple logic 
+#to see if the query returned a NoneType, if it did, redirect 
+#somewhere or display a 404 error page.
+
 # Show all restaurants
-
-
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurant():
@@ -759,7 +775,7 @@ def deleteMenu(restaurant_id, menu_id):
 
 
 if __name__ == '__main__':
-    app.secret_key = 'super secret key'
+    app.secret_key = 'SuperSecretKey'
     # app.config['SECRET_KEY'] = ''.join(random.choice(
     # string.ascii_uppercase + string.digits) for x in xrange(32))
     app.config['SESSION_TYPE'] = 'filesystem'
