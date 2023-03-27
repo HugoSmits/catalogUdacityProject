@@ -12,7 +12,6 @@ itsdangerous==1.1.0
 system==0.1.14
 packaging==19.0
 oauth2-client==1.1.0
-redis==3.1.0
 passlib==1.7.1
 requests2==2.16.0
 httplib2==0.12.0
